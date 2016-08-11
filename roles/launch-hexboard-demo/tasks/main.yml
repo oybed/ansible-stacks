@@ -1,6 +1,31 @@
 ---
-- name: "Launch Hexboard demo in project {{ openshift_project_name }}"
+- name: "Log in to OpenShift Client"
+  command: >
+    {{ openshift.common.client_binary }} login {{ openshift_host_env }}
+    --insecure-skip-tls-verify=true --username={{ openshift_user }} --password={{ openshift_password }}
+
+- name: "Create new-app for {{ openshift_project_name }}"
+  command: >
+    {{ openshift.common.client_binary }} new-app -f $appsource -n {{ openshift_project_name }} -p ACCESS_TOKEN=$(oc whoami -t)
+
+- name: "Kick off the initial build for hexboard"
+  command: >
+    {{ openshift.common.client_binary }} start-build hexboard -n {{ openshift_project_name }}
+
+- name: "Kick off the initial build for sketchpod"
+  command: >
+    {{ openshift.common.client_binary }} start-build sketchpod -n {{ openshift_project_name }}
+
+- name: "Remove existing routes"
+  command: >
+    {{ openshift.common.client_binary }} delete route --all -n {{ openshift_project_name }}
+
+- name: "Update route with proper URL"
+  command: >
+    {{ openshift.common.client_binary }} expose svc/hexboard --hostname={{ openshift_project_name }}.demo.innovation.redhat.com -n {{ openshift_project_name }}
+
+- name: "Create Jenkins Hexboard demo for project {{ openshift_project_name }}"
   uri:
-   url: http://{{ jenkins_host_env }}/job/01-HexboardBuildAndDeploy/buildWithParameters?PROJECT_NAME={{ openshift_project_name }}
+   url: http://{{ jenkins_host_env }}/job/CreateJenkinsJob/buildWithParameters?git_url={{ git_url }}&git_branch={{ git_branch }}&new_job_name={{ openshift_project_name }}
    method: POST
    status_code: 200,201
