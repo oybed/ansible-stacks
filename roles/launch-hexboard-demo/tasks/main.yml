@@ -1,6 +1,12 @@
 ---
+- name: "Create Demo Pipeline"
+  uri:
+   url: http://{{ jenkins_host_env }}/job/{{ seed_job_name }}/buildWithParameters?new_job_name={{ openshift_project_name }}&git_url={{ git_url }}
+   method: POST
+   status_code: 200,201
+
 - name: "Launch Hexboard demo in project {{ openshift_project_name }}"
   uri:
-   url: http://{{ jenkins_host_env }}/job/01-HexboardBuildAndDeploy/buildWithParameters?PROJECT_NAME={{ openshift_project_name }}
+   url: http://{{ jenkins_host_env }}/job/{{ openshift_project_name }}/build
    method: POST
    status_code: 200,201
