@@ -1,8 +1,16 @@
 ---
 - name: "Launch the Hexboard Demo"
   hosts: localhost
-
+  vars:
+  - seed_job_name: Seed_Project_Release_Pipeline
   roles:
   - role: openshift-defaults
   - role: create-ose-project
+    openshift_project_name: "{{ openshift_project }}-dev"
+  - role: create-ose-project
+    openshift_project_name: "{{ openshift_project }}-stage"
+  - role: create-ose-project
+    openshift_project_name: "{{ openshift_project }}-demo"
   - role: launch-hexboard-demo
+    openshift_project_name: "{{ openshift_project }}"
+
