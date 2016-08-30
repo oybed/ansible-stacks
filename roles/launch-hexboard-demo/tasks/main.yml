@@ -1,7 +1,7 @@
 ---
 - name: "Create Demo Pipeline"
   uri:
-    url: http://{{ jenkins_host_env }}/job/{{ seed_job_name }}/buildWithParameters?token=rhoil&new_job_name={{ openshift_project_name }}&git_url={{ git_url|urlencode() }}
+    url: http://{{ jenkins_host_env }}/job/{{ seed_job_name }}/buildWithParameters?token=rhoil&new_job_name={{ openshift_project_name }}&git_url={{ git_url|urlencode() }}&git_branch={{ git_branch }}
     method: POST
     status_code: 201
 
