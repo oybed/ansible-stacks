@@ -11,7 +11,7 @@ docker:
   common:
     client_binary: "docker"
   registry:
-    host: registry.env3-1.innovation.labs.redhat.com
+    host: registry.apps.env2-1.innovation.labs.redhat.com
   user:
     email: Rhc-open-innovation-labs@redhat.com  
 
