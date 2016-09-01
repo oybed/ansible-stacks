@@ -1,0 +1,53 @@
+{
+  "openshift_resources_to_create": {
+    "projects": [
+      {
+        "name": "{{ openshift_project_name }}-dev",
+        "display_name": "{{ openshift_project_name }} - Dev",
+        "build_environment": true,
+        "apps": [
+          {
+            "name": "hexboard",
+            "git_url": "{{ git_url }}",
+            "base_image": "openshift/nodejs"
+          },
+          {
+            "name": "sketchpod",
+            "git_url": "https://github.com/rht-labs/sketchpod",
+            "base_image": "openshift/nodejs"
+          }
+        ]
+      },
+      {
+        "name": "{{ openshift_project_name }}-stage",
+        "display_name": "{{ openshift_project_name }} - Stage",
+        "promotion_environment": true,
+        "apps": [
+          {
+            "name": "hexboard",
+            "base_image": "hexboard"
+          },
+          {
+            "base_image": "sketchpod",
+            "name": "sketchpod"
+          }
+        ]
+      },
+      {
+        "name": "{{ openshift_project_name }}-demo",
+        "display_name": "{{ openshift_project_name }} - Demo",
+        "promotion_environment": true,
+        "apps": [
+          {
+            "name": "hexboard",
+            "base_image": "hexboard"
+          },
+          {
+            "base_image": "sketchpod",
+            "name": "sketchpod"
+          }
+        ]
+      }
+    ]
+  }
+}
