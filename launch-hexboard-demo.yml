@@ -1,16 +1,25 @@
 ---
-- name: "Launch the Hexboard Demo"
+- name: "Prepare for the Launch of the Hexboard Demo"
   hosts: localhost
+  tasks:
+  - name: Prepare Resource File
+    template:
+      src: roles/launch-hexboard-demo/templates/demo_resources.j2
+      dest: /tmp/{{ openshift_project_name }}_resources.json
+
+- name: "Create and Launch the Hexboard Demo"
+  hosts: localhost
+  pre_tasks:
+  - include_vars: /tmp/{{ openshift_project_name }}_resources.json
   vars:
   - seed_job_name: Seed_Project_Release_Pipeline
   roles:
   - role: openshift-defaults
-  - role: create-ose-project
-    openshift_project_name: "{{ openshift_project }}-dev"
-  - role: create-ose-project
-    openshift_project_name: "{{ openshift_project }}-stage"
-  - role: create-ose-project
-    openshift_project_name: "{{ openshift_project }}-demo"
+  - create-openshift-resources
   - role: launch-hexboard-demo
-    openshift_project_name: "{{ openshift_project }}"
 
+- name: "Clean-Up"
+  hosts: localhost
+  tasks:
+  - name: Remove Resource File
+    shell: rm -f /tmp/{{ openshift_project_name }}_resources.json

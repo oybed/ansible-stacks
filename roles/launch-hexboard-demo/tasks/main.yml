@@ -4,13 +4,3 @@
     url: http://{{ jenkins_host_env }}/job/{{ seed_job_name }}/buildWithParameters?token=rhoil&new_job_name={{ openshift_project_name }}&git_url={{ git_url|urlencode() }}&git_branch={{ git_branch }}
     method: POST
     status_code: 201
-
-- name: "Launch Hexboard demo in project {{ openshift_project_name }}"
-  uri:
-    url: http://{{ jenkins_host_env }}/job/{{ openshift_project_name }}/build
-    method: POST
-    status_code: 201
-  register: result
-  until: result.status == 201
-  retries: 60
-  delay: 1
