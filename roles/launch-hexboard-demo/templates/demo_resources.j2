@@ -8,43 +8,64 @@
         "apps": [
           {
             "name": "hexboard",
-            "git_url": "{{ git_url }}",
-            "base_image": "openshift/nodejs"
+            "git_url": "{{ git_url }}#{{ git_branch }}",
+            "base_image": "openshift/nodejs",
+            "environment_variables": {
+               "ACCESS_TOKEN": "{{ openshift_access_token.stdout }}",
+               "NAMESPACE": "{{ openshift_project_name }}-dev"
+            }
           },
           {
             "name": "sketchpod",
             "git_url": "https://github.com/rht-labs/sketchpod",
-            "base_image": "openshift/nodejs"
+            "base_image": "openshift/nodejs",
+            "labels": {
+               "servicegroup": "sketchpod"
+            }
           }
         ]
       },
       {
-        "name": "{{ openshift_project_name }}-stage",
-        "display_name": "{{ openshift_project_name }} - Stage",
+        "name": "{{ openshift_project_name }}-test",
+        "display_name": "{{ openshift_project_name }} - Test",
         "promotion_environment": true,
         "apps": [
           {
             "name": "hexboard",
-            "base_image": "hexboard"
+            "base_image": "hexboard",
+            "environment_variables": {
+               "ACCESS_TOKEN": "{{ openshift_access_token.stdout }}",
+               "NAMESPACE": "{{ openshift_project_name }}-test"
+            }
           },
           {
             "base_image": "sketchpod",
-            "name": "sketchpod"
+            "name": "sketchpod",
+            "labels": {
+               "servicegroup": "sketchpod"
+            }
           }
         ]
       },
       {
-        "name": "{{ openshift_project_name }}-demo",
-        "display_name": "{{ openshift_project_name }} - Demo",
+        "name": "{{ openshift_project_name }}-uat",
+        "display_name": "{{ openshift_project_name }} - UAT",
         "promotion_environment": true,
         "apps": [
           {
             "name": "hexboard",
-            "base_image": "hexboard"
+            "base_image": "hexboard",
+            "environment_variables": {
+               "ACCESS_TOKEN": "{{ openshift_access_token.stdout }}",
+               "NAMESPACE": "{{ openshift_project_name }}-uat"
+            }
           },
           {
             "base_image": "sketchpod",
-            "name": "sketchpod"
+            "name": "sketchpod",
+            "labels": {
+               "servicegroup": "sketchpod"
+            }
           }
         ]
       }
