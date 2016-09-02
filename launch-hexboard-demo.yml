@@ -1,6 +1,8 @@
 ---
 - name: "Prepare for the Launch of the Hexboard Demo"
   hosts: localhost
+  roles:
+  - role: openshift-defaults
   tasks:
   - name: Prepare Resource File
     template:
