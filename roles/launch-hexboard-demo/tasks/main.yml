@@ -3,4 +3,7 @@
   uri:
     url: http://{{ jenkins_host_env }}/job/{{ seed_job_name }}/buildWithParameters?token=rhoil&new_job_name={{ openshift_project_name }}&git_url={{ git_url|urlencode() }}&git_branch={{ git_branch }}
     method: POST
+    user: "{{ jenkins_user }}"
+    pasword: "{{ jenkins_password }}"
+    force_basic_auth: yes
     status_code: 201
