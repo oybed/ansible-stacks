@@ -1,6 +1,6 @@
 ---
-jenkins_host_env: cicd.demo.innovation.redhat.com
-openshift_host_env: master1.env2-1.innovation.labs.redhat.com 
+jenkins_host_env: cicd.demo.rht-labs.com:8080
+openshift_host_env: master1.demo.rht-labs.com
 openshift_user: "demo"
 openshift_password: ""
 openshift_project_name: ""
@@ -11,7 +11,7 @@ docker:
   common:
     client_binary: "docker"
   registry:
-    host: registry.apps.env2-1.innovation.labs.redhat.com
+    host: registry.apps.demo.rht-labs.com
   user:
-    email: Rhc-open-innovation-labs@redhat.com  
+    email: rhc-open-innovation-labs@redhat.com  
 
