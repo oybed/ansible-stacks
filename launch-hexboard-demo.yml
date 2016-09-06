@@ -15,9 +15,9 @@
   - include_vars: /tmp/{{ openshift_project_name }}_resources.json
   vars:
   - seed_job_name: Seed_Project_Release_Pipeline
-  - jenkins_user: {{ jenkins_user }}
-  - jenkins_password: {{ jenkins_password }}
-  - jenkins_token: {{ jenkins_token }}
+  - jenkins_user: "{{ jenkins_user }}"
+  - jenkins_password: "{{ jenkins_password }}"
+  - jenkins_token: "{{ jenkins_token }}"
   roles:
   - role: openshift-defaults
   - role: create-openshift-resources
