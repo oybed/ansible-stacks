@@ -1,5 +1,5 @@
 ---
-jenkins_host_env: cicd.demo.rht-labs.com:8080
+jenkins_host_env: cicd.demo.rht-labs.com:8888
 openshift_host_env: master-1.labs.rht-labs.com
 openshift_user: "demo"
 openshift_password: ""
