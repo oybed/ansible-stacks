@@ -1,6 +1,6 @@
 ---
 jenkins_host_env: cicd.demo.etl.rht-labs.com
-openshift_host_env: master-1.env2-1.etl.rht-labs.com
+openshift_host_env: master1.env2-1.etl.rht-labs.com
 openshift_user: "demo"
 openshift_password: ""
 openshift_project_name: ""
