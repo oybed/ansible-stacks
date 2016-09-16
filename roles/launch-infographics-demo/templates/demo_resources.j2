@@ -9,7 +9,8 @@
           {
             "name": "infographics",
             "git_url": "{{ git_url }}#{{ git_branch }}",
-            "base_image": "openshift/nodejs",
+            "context_dir": "website",
+            "base_image": "openshift/php"
             "environment_variables": {
                "NAMESPACE": "{{ openshift_project_name }}-dev"
             }
