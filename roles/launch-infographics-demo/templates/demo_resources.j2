@@ -1,0 +1,49 @@
+{
+  "openshift_resources_to_create": {
+    "projects": [
+      {
+        "name": "{{ openshift_project_name }}-dev",
+        "display_name": "{{ openshift_project_name }} - Dev",
+        "build_environment": true,
+        "apps": [
+          {
+            "name": "infographics",
+            "git_url": "{{ git_url }}#{{ git_branch }}",
+            "base_image": "openshift/nodejs",
+            "environment_variables": {
+               "NAMESPACE": "{{ openshift_project_name }}-dev"
+            }
+          }
+        ]
+      },
+      {
+        "name": "{{ openshift_project_name }}-test",
+        "display_name": "{{ openshift_project_name }} - Test",
+        "promotion_environment": true,
+        "apps": [
+          {
+            "name": "infographics",
+            "base_image": "infographics",
+            "environment_variables": {
+               "NAMESPACE": "{{ openshift_project_name }}-test"
+            }
+          }
+        ]
+      },
+      {
+        "name": "{{ openshift_project_name }}-uat",
+        "display_name": "{{ openshift_project_name }} - UAT",
+        "promotion_environment": true,
+        "apps": [
+          {
+            "name": "infographics",
+            "base_image": "infographics",
+            "environment_variables": {
+               "NAMESPACE": "{{ openshift_project_name }}-uat"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
