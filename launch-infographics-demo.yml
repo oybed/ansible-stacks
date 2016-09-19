@@ -21,7 +21,7 @@
   roles:
   - role: openshift-defaults
   - role: create-openshift-resources
-  - role: launch-hexboard-demo
+#  - role: launch-hexboard-demo
 
 - name: "Clean-Up"
   hosts: localhost
