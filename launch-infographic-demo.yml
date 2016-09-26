@@ -6,7 +6,7 @@
   tasks:
   - name: Prepare Resource File
     template:
-      src: roles/launch-infographics-demo/templates/demo_resources.j2
+      src: roles/launch-infographic-demo/templates/demo_resources.j2
       dest: /tmp/{{ openshift_project_name }}_resources.json
 
 - name: "Create and Launch the InfoGraphics Demo"
