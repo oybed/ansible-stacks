@@ -12,16 +12,13 @@
 						"apps": [
 							{
 								"name": "jenkins",
-								"scm_url": "https://github.com/oybed/openshift-jenkins-s2i-config",
-								"scm_ref": "jenkinsfile_local",
-								"base_image": "openshift/jenkins:1",
+								"base_image": "openshift/rht-labs-jenkins",
                                                                 "routes": [
                                                                         {
                                                                                 "route_type": "default",
                                                                                 "hostname": "{{ demo_projectname }}-jenkins.apps.{{ demo_hosting_env }}"
 									}
 								],
-								"build_tool": "s2i",
 								"environment_variables": {
 									"JENKINS_PASSWORD": "demo"
 								}
