@@ -1,0 +1,106 @@
+{
+	"name": "{{ demo_projectname }} Demo",
+	"openshift_clusters": [
+		{
+			"openshift_host_env": "{{ demo_hosting_env }}:8443",
+			"openshift_resources": {
+				"projects": [
+					{
+						"name": "{{ demo_projectname }}-pipeline",
+						"display_name": "Pipeline ({{ demo_projectname }})",
+						"environment_type": "build",
+						"apps": [
+							{
+								"name": "jenkins",
+								"scm_url": "https://github.com/oybed/openshift-jenkins-s2i-config",
+								"scm_ref": "jenkinsfile_local",
+								"base_image": "openshift/jenkins:1",
+                                                                "routes": [
+                                                                        {
+                                                                                "route_type": "default"
+									}
+								],
+								"build_tool": "s2i",
+								"environment_variables": {
+									"JENKINS_PASSWORD": "demo"
+								}
+							}
+						],
+						"user_to_role": [
+							{
+								"user": {
+									"user_name": "{{ demo_username }}"
+								},
+								"roles": [
+									{
+										"name": "admin"
+									}
+								]
+							}
+						]
+					},
+					{
+						"name": "{{ demo_projectname }}-infographic-dev",
+						"display_name": "Infographic - Development ({{ demo_projectname }})",
+						"environment_type": "build",
+						"apps": [
+							{
+								"name": "infographic",
+								"scm_url": "{{ demo_scm_url }}",
+								"scm_ref": "master",
+								"context_dir": "website",
+								"base_image": "openshift/php",
+								"build_tool": "s2i",
+                                                                "routes": [
+                                                                        {
+                                                                                "route_type": "default"
+									}
+								]
+							}
+						],
+						"user_to_role": [
+							{
+								"user": {
+									"user_name": "{{ demo_username }}"
+								},
+								"roles": [
+									{
+										"name": "admin"
+									}
+								]
+							}
+						]
+					},
+					{
+						"name": "{{ demo_projectname }}-infographic-uat",
+						"display_name": "Infographic - UAT ({{ demo_projectname }})",
+						"environment_type": "promotion",
+						"apps": [
+							{
+								"name": "infographic",
+								"base_image": "infographic",
+                                                                "routes": [
+                                                                        {
+                                                                                "route_type": "default"
+									}
+								]
+							}
+						],
+						"user_to_role": [
+							{
+								"user": {
+									"user_name": "{{ demo_username }}"
+								},
+								"roles": [
+									{
+										"name": "admin"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

@@ -1,0 +1,44 @@
+---
+- name: "Prepare for demo execution"
+  hosts: localhost
+  vars:
+  - demo_hosting_env: master1.c1.core.rht-labs.com
+  - demo_projectname: huito2
+  - demo_scm_url: https://github.com/oybed/infographic
+  - demo_username: obedin
+  - demo_token: 2rb7dYI6a0pmTy-n_cGq3DWL7iBSY1klcPDgs9TAqBA
+  roles:
+  - role: common
+
+- name: "Write the demo json"
+  hosts: localhost
+  roles:
+  - role: populatejson 
+
+- name: "Load Up the API doc"
+  hosts: localhost
+  vars: 
+  - api_server_fqdn: "labs-api.demo.rht-labs.com"
+  - api_server_port: "80"
+  roles:
+  - role: createapidoc
+
+- name: "Run ansible-stacks"
+  vars:
+    openshift_user: "{{ demo_username }}"
+    openshift_token: "{{ demo_token }}"
+    api_document_file: "{{ demo_json_file }}"
+  include: /home/obedin/coding/testing/ansible-stacks/playbooks/load_infra_local.yml 
+
+
+- name: "Get Jenkinsfile for demo and populate Jenkins"
+  hosts: localhost
+  roles:
+  - role: jenkinsfile
+  - role: createjenkinsjob
+  # - role: seedjenkins
+
+- name: "Demo prep clean-up"
+  hosts: localhost
+  roles:
+  - role: cleanup

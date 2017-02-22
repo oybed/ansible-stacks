@@ -1,0 +1,23 @@
+---
+
+- name: "Generate the Jenkinsfile"
+  uri:
+    url: "{{ engagement_url }}//jenkinsfile?applicationName=infographic"
+    method: GET
+    return_content: yes
+  register: jenkinsfile
+
+- name: "Save the Jenkinsfile to disk"
+  copy:
+    content: "{{ jenkinsfile.content }}"
+    dest: "{{ demo_jenkinsfile_dir }}/Jenkinsfile"
+
+- name: "Tweaks to remove checkout scm as it's not needed"
+  replace:
+    dest: "{{ demo_jenkinsfile_dir }}/Jenkinsfile"
+    regexp: "\\s+stage \\('Code Checkout'\\) {\\s+checkout scm\\s+}"
+    replace: ""
+
+- name: "Save the Jenkinsfile to variable (including tweaks)"
+  set_fact:
+    demo_jenkinsfile_content: "{{ jenkinsfile.content | regex_replace('\\s+stage \\(.Code Checkout.\\) {\\s+checkout scm\\s+}', '') }}"
