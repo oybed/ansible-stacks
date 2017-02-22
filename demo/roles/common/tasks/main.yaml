@@ -11,7 +11,7 @@
     demo_projectname: "{{ demo_projectname }}"
     demo_scm_url: "{{ demo_scm_url }}"
     demo_username: "{{ demo_username }}" 
-    demo_token: "{{ demo_token }}"
+    demo_password: "{{ demo_password }}" 
 
 - name: "Use a unique temporary file to store the demo json"
   command: mktemp

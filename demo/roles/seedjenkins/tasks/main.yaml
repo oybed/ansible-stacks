@@ -14,7 +14,7 @@
 
 - name: "Run Jenkins seed job"
   command: >
-    curl -X POST http://admin:demo@jenkins-{{ demo_projectname }}-pipeline.apps.{{ demo_hosting_env }}/job/release-pipeline-seed-job-scm-local/build --data-urlencode json='{"parameter": [{"name":"application_name", "value":"{{ demo_projectname }}"}, {"name":"openshift_api_token", "value":"{{ demo_token }}"}]}'
+    curl -X POST http://admin:demo@jenkins-{{ demo_projectname }}-pipeline.apps.{{ demo_hosting_env }}/job/release-pipeline-seed-job-scm-local/build --data-urlencode json='{"parameter": [{"name":"application_name", "value":"{{ demo_projectname }}"}, {"name":"openshift_api_token", "value":"{{ openshift_token }}"}]}'
  
 #- name: "Run Jenkins seed job"
 #  uri:

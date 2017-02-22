@@ -1,15 +1,19 @@
 ---
 - name: "Prepare for demo execution"
   hosts: localhost
-#  vars:
-#  - demo_hosting_api_fqdn: 
-#  - demo_hosting_env: 
-#  - demo_projectname: 
-#  - demo_scm_url: 
-#  - demo_username: 
-#  - demo_token: 
+  vars:
+  # - demo_hosting_api_fqdn: - e.g.: "master1.demo.example.com:8443"
+  # - demo_hosting_env:      - e.g.: "demo.example.com" 
+  # - demo_projectname:      - e.g.: "companyname"  
+  # - demo_scm_url:          - e.g.: "https://github.com/rht-labs/infographic"
+  # - demo_username:         - e.g.: "username"
+  # - demo_password:         - e.g.: "password"
+  - openshift_login_url: "{{ demo_hosting_api_fqdn }}"
+  - openshift_user: "{{ demo_username }}"
+  - openshift_password: "{{ demo_password }}"
   roles:
   - role: common
+  - role: ../roles/openshift-login
 
 - name: "Write the demo json"
   hosts: localhost
@@ -27,7 +31,7 @@
 - name: "Run ansible-stacks"
   vars:
     openshift_user: "{{ demo_username }}"
-    openshift_token: "{{ demo_token }}"
+    openshift_password: "{{ demo_password }}"
     api_document_file: "{{ demo_json_file }}"
   include: ../playbooks/load_infra_local.yml 
 
