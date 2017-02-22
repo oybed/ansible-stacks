@@ -6,6 +6,7 @@
 
 - name: "Set demo facts"
   set_fact:
+    demo_hosting_api_fqdn: "{{ demo_hosting_api_fqdn }}"
     demo_hosting_env: "{{ demo_hosting_env }}"
     demo_projectname: "{{ demo_projectname }}"
     demo_scm_url: "{{ demo_scm_url }}"

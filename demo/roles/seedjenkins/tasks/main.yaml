@@ -14,11 +14,11 @@
 
 - name: "Run Jenkins seed job"
   command: >
-    curl -X POST http://admin:demo@jenkins-{{ demo_projectname }}-pipeline.apps.c1.core.rht-labs.com/job/release-pipeline-seed-job-scm-local/build --data-urlencode json='{"parameter": [{"name":"application_name", "value":"{{ demo_projectname }}"}, {"name":"openshift_api_token", "value":"{{ demo_token }}"}]}'
+    curl -X POST http://admin:demo@jenkins-{{ demo_projectname }}-pipeline.apps.{{ demo_hosting_env }}/job/release-pipeline-seed-job-scm-local/build --data-urlencode json='{"parameter": [{"name":"application_name", "value":"{{ demo_projectname }}"}, {"name":"openshift_api_token", "value":"{{ demo_token }}"}]}'
  
 #- name: "Run Jenkins seed job"
 #  uri:
-#    url: "http://jenkins-{{ demo_projectname }}-pipeline.apps.c1.core.rht-labs.com/job/release-pipeline-seed-job-scm-local/buildWithParameters?{{ post_values | urlencode() }}"
+#    url: "http://jenkins-{{ demo_projectname }}-pipeline.apps.{{ demo_hosting_env }}/job/release-pipeline-seed-job-scm-local/buildWithParameters?{{ post_values | urlencode() }}"
 #    method: POST
 #    user: "admin"
 #    password: "demo"
