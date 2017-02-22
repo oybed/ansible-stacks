@@ -17,7 +17,8 @@
 								"base_image": "openshift/jenkins:1",
                                                                 "routes": [
                                                                         {
-                                                                                "route_type": "default"
+                                                                                "route_type": "default",
+                                                                                "hostname": "{{ demo_projectname }}-jenkins.apps.{{ demo_hosting_env }}"
 									}
 								],
 								"build_tool": "s2i",
@@ -53,7 +54,8 @@
 								"build_tool": "s2i",
                                                                 "routes": [
                                                                         {
-                                                                                "route_type": "default"
+                                                                                "route_type": "default",
+                                                                                "hostname": "{{ demo_projectname }}-infographic-dev.apps.{{ demo_hosting_env }}"
 									}
 								]
 							}
@@ -81,7 +83,8 @@
 								"base_image": "infographic",
                                                                 "routes": [
                                                                         {
-                                                                                "route_type": "default"
+                                                                                "route_type": "default",
+                                                                                "hostname": "{{ demo_projectname }}-infographic-uat.apps.{{ demo_hosting_env }}"
 									}
 								]
 							}

@@ -7,7 +7,7 @@
 
 - name: "Create a new jenkins job"
   uri:
-    url: "http://jenkins-{{ demo_projectname }}-pipeline.apps.{{ demo_hosting_env }}/createItem?name={{ demo_projectname }}-pipeline"
+    url: "http://{{ demo_projectname}}-jenkins.apps.{{ demo_hosting_env }}/createItem?name={{ demo_projectname }}-pipeline"
     method: POST
     user: "admin"
     password: "demo"
