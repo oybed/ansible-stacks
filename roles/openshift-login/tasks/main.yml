@@ -81,10 +81,10 @@
   when:
   - openshift_token|trim == ''
 
-- name: "Set openshift_token fact"
-  set_fact:
-    openshift_token: "{{ token_output.stdout }}"
-  when: 
-  - token_output is defined
-  - token_output|trim != ''
+# - name: "Set openshift_token fact"
+#  set_fact:
+#    openshift_token: "{{ token_output.stdout }}"
+#  when: 
+#  - token_output is defined
+#  - token_output|trim != ''
 
