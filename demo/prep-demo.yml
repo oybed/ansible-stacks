@@ -8,12 +8,13 @@
   # - demo_scm_url:          - e.g.: "https://github.com/rht-labs/infographic"
   # - demo_username:         - e.g.: "username"
   # - demo_password:         - e.g.: "password"
-  - openshift_login_url: "{{ demo_hosting_api_fqdn }}"
-  - openshift_user: "{{ demo_username }}"
-  - openshift_password: "{{ demo_password }}"
+  # - demo_token:            - e.g.: "OpenShift token"
+  # - openshift_login_url: "{{ demo_hosting_api_fqdn }}"
+  # - openshift_user: "{{ demo_username }}"
+  # - openshift_password: "{{ demo_password }}"
   roles:
   - role: common
-  - role: ../roles/openshift-login
+  # - role: ../roles/openshift-login
 
 - name: "Write the demo json"
   hosts: localhost
@@ -31,7 +32,7 @@
 - name: "Run ansible-stacks"
   vars:
     openshift_user: "{{ demo_username }}"
-    openshift_password: "{{ demo_password }}"
+    openshift_token: "{{ demo_token }}"
     api_document_file: "{{ demo_json_file }}"
   include: ../playbooks/load_infra_local.yml 
 
