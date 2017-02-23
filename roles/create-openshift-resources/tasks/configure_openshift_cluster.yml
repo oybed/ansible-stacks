@@ -99,7 +99,7 @@
 - name: "Log in to OpenShift Client (token)"
   command: >
     {{ openshift.common.client_binary }} login {{ openshift_login_url }}
-    --insecure-skip-tls-verify=true --username={{ openshift_token }}
+    --insecure-skip-tls-verify=true --token={{ openshift_token }}
   changed_when: False
   when:
   - openshift_resources_present|bool == True
