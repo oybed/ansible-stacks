@@ -49,14 +49,14 @@
   - openshift_token|trim != ''
   - oc_login|bool == True
 
-- name: Fail for Missing Authentication method
+- name: "Fail for Missing Authentication method"
   fail: msg="This role requires either openshift_token, or openshift_user and openshift_password to be set"
   when:
   - auth_token|bool == False
   - auth_user_pass|bool == False
   - oc_login|bool == True
 
-- name: "Log in to OpenShift Client"
+- name: "Log in to OpenShift Client (username/password)"
   command: >
     {{ openshift.common.client_binary }} login {{ openshift_login_url }}
     --insecure-skip-tls-verify=true --username={{ openshift_user }} --password={{ openshift_password }}
@@ -64,6 +64,16 @@
   when:
   - auth_user_pass|bool == True
   - auth_token|bool == False
+  - oc_login|bool == True
+
+- name: "Log in to OpenShift Client (token)"
+  command: >
+    {{ openshift.common.client_binary }} login {{ openshift_login_url }}
+    --insecure-skip-tls-verify=true --token={{ openshift_token }}
+  changed_when: False
+  when:
+  - auth_user_pass|bool == False
+  - auth_token|bool == True
   - oc_login|bool == True
 
 - name: "Add token to all openshift client comands when token is set"

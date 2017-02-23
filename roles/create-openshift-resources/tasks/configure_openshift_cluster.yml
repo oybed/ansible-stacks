@@ -85,7 +85,7 @@
   - openshift_resources_present|bool == True
   - openshift_login_url == ""
 
-- name: "Log in to OpenShift Client"
+- name: "Log in to OpenShift Client (username/password)"
   command: >
     {{ openshift.common.client_binary }} login {{ openshift_login_url }}
     --insecure-skip-tls-verify=true --username={{ openshift_user }} --password={{ openshift_password }}
@@ -94,6 +94,17 @@
   - openshift_resources_present|bool == True
   - auth_user_pass|bool == True
   - auth_token|bool == False
+  - oc_login|bool == True
+
+- name: "Log in to OpenShift Client (token)"
+  command: >
+    {{ openshift.common.client_binary }} login {{ openshift_login_url }}
+    --insecure-skip-tls-verify=true --username={{ openshift_token }}
+  changed_when: False
+  when:
+  - openshift_resources_present|bool == True
+  - auth_user_pass|bool == False
+  - auth_token|bool == True
   - oc_login|bool == True
 
 - name: "Add token to all openshift client comands when token is set"
