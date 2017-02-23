@@ -38,6 +38,8 @@
 
 - name: "Get Jenkinsfile for demo and populate Jenkins"
   hosts: localhost
+  vars:
+    openshift_token: "{{ demo_token }}"
   roles:
   - role: jenkinsfile
   - role: createjenkinsjob
