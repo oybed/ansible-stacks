@@ -5,49 +5,58 @@
 - name: "Set Default Cluster Facts"
   set_fact:
     openshift_persistent_volumes_def: ''
-    openshift_resources_present: false
+    openshift_resources_present: False
     openshift_cluster: "{{ openshift_cluster_item }}" # http://docs.ansible.com/ansible/playbooks_loops.html#loops-and-includes-in-2-0
+    openshift_login_url: ''
+    auth_token: False
+    auth_user_pass: False
 
 - name: "Set Variable openshift_persistent_volumes_def Fact"
   set_fact:
     openshift_persistent_volumes_def: "{{ openshift_cluster.persistent_volumes }}"
-  when: openshift_cluster.persistent_volumes is defined and openshift_cluster.persistent_volumes != "" and openshift_cluster.persistent_volumes|length > 0
+  when:
+  - openshift_cluster.persistent_volumes is defined
+  - openshift_cluster.persistent_volumes|trim != ""
+  - openshift_cluster.persistent_volumes|length > 0
+
+- name: "Set OpenShift Login URL with openshift_url"
+  set_fact:
+    openshift_login_url: "{{ openshift_url }}"
+  when: openshift_url is defined and openshift_url != ''
+
+- name: "Set OpenShift Login URL with openshift_cluster.openshift_host_env"
+  set_fact:
+    openshift_login_url: "{{ openshift_cluster.openshift_host_env }}"
+  when: openshift_login_url == '' and openshift_cluster.openshift_host_env is defined and openshift_cluster.openshift_host_env != ''
 
 - name: "Set Variable openshift_resources_present Facts"
   set_fact:
-    openshift_resources_present: true
-  when: openshift_cluster.openshift_resources is defined and openshift_cluster.openshift_resources != "" and openshift_cluster.openshift_resources|length > 0
-
-- name: Fail for Missing User Name
-  fail: msg="This role requires openshift_user to be set and non empty"
-  when: openshift_resources_present == true and openshift_user is not defined or openshift_user == ''
-
-- name: Fail for Missing Password
-  fail: msg="This role requires openshift_password to be set and non empty"
-  when: openshift_resources_present == true and openshift_password is not defined or openshift_password == ''
+    openshift_resources_present: True
+  when:
+  - openshift_cluster.openshift_resources is defined
+  - openshift_cluster.openshift_resources|trim != ""
+  - openshift_cluster.openshift_resources|length > 0
 
 - name: "Fail for Missing OpenShift Host Env"
-  fail: msg="This role requires openshift_cluster.openshift_host_env to be set and non empty"
-  when: openshift_resources_present == true and openshift_cluster.openshift_host_env is not defined or openshift_cluster.openshift_host_env == ""
+  fail: msg="This role requires openshift_cluster.openshift_host_env (in the API document) or openshift_url (via CLI or host vars) to be set and non empty"
+  when: 
+  - openshift_resources_present|bool == True
+  - openshift_login_url == ""
 
-- name: "Log in to OpenShift Client"
-  command: >
-    {{ openshift.common.client_binary }} login {{ openshift_cluster.openshift_host_env }}
-    --insecure-skip-tls-verify=true --username={{ openshift_user }} --password={{ openshift_password }}
-  changed_when: False
-  when: openshift_resources_present == true
+- include: ../../openshift-login
 
 - include: create_persistent_volumes.yml
   with_items: '{{ openshift_persistent_volumes_def }}'
   loop_control:
     loop_var: persistent_volumes_item
   static: no
-  when: openshift_persistent_volumes_def != ''
+  when: openshift_persistent_volumes_def|trim != ''
 
 - include: create_openshift_resources.yml
-  when: openshift_resources_present == true
+  when: openshift_resources_present|bool == True
 
 - name: "Alert User No OpenShift Resources Were Declared"
   debug:
     msg: "There were no openshift_resources set for your openshift_cluster. This is the key data for this role, so you may want to check that you do not have typo in the request."
-  when: openshift_resources_present == false
+  when: openshift_resources_present|bool == False
+
