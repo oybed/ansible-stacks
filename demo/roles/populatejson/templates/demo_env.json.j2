@@ -71,6 +71,35 @@
 						]
 					},
 					{
+						"name": "{{ demo_projectname }}-infographic-test",
+						"display_name": "Infographic - Test ({{ demo_projectname }})",
+						"environment_type": "promotion",
+						"apps": [
+							{
+								"name": "infographic",
+								"base_image": "infographic",
+                                                                "routes": [
+                                                                        {
+                                                                                "route_type": "default",
+                                                                                "hostname": "{{ demo_projectname }}-infographic-test.apps.{{ demo_hosting_env }}"
+									}
+								]
+							}
+						],
+						"user_to_role": [
+							{
+								"user": {
+									"user_name": "{{ demo_username }}"
+								},
+								"roles": [
+									{
+										"name": "admin"
+									}
+								]
+							}
+						]
+					},
+					{
 						"name": "{{ demo_projectname }}-infographic-uat",
 						"display_name": "Infographic - UAT ({{ demo_projectname }})",
 						"environment_type": "promotion",
