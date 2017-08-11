@@ -8,11 +8,6 @@
 - name: "Create OpenShift objects for Cluster Policies"
   command: >
     oc apply -f {{ item.template }} 
-  register: task_result
-  until: task_result.rc == 0
-  retries: 5
-  delay: 1
-  ignore_errors: yes
   with_items: "{{ openshift_cluster['policies'] }}"
 
 - name: "Create OpenShift objects for Cluster Builds (WITHOUT parameters)"
