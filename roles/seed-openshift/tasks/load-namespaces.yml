@@ -1,7 +1,0 @@
----
-
-- name: "Create OpenShift Namespaces (projects)"
-  command: >
-    {{ openshift.common.client_binary }} apply -f {{ namespaces_dir | default('namespaces') }} 
-
-
