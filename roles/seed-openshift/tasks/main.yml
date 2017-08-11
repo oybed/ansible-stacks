@@ -2,44 +2,39 @@
 
 - name: "Create OpenShift objects for Cluster Namespaces"
   command: >
-    oc apply -f {{ item.template }} 
-  with_items: "{{ openshift_cluster['namespaces'] }}"
+    oc apply -f {{ item.1.template }} 
+  with_subelements:
+  - "{{ openshift_cluster }}"
+  - content 
+  when:
+  - item.0.object == 'namespace'
 
 - name: "Create OpenShift objects for Cluster Policies"
   command: >
-    oc apply -f {{ item.template }} 
-  with_items: "{{ openshift_cluster['policies'] }}"
+    oc apply -f {{ item.1.template }} 
+  with_subelements:
+  - "{{ openshift_cluster }}"
+  - content 
+  when:
+  - item.0.object == 'policy'
 
-- name: "Create OpenShift objects for Cluster Builds (WITHOUT parameters)"
+- name: "Create OpenShift objects (WITHOUT parameters)"
   command: >
-    oc apply -f {{ item.template }}
-  with_items:
-  - "{{ openshift_cluster['builds'] }}"
+    oc apply -f {{ item.1.template }}
+  with_subelements:
+  - "{{ openshift_cluster }}"
+  - content 
   when:
-  - item.params is not defined or item.params|trim == ""
+  - item.0.object not in [ 'namespace', 'policy' ]
+  - item.1.params is not defined or item.1.params|trim == ""
 
-- name: "Create OpenShift objects for Cluster Builds (WITH parameters)"
+- name: "Create OpenShift objects  (WITH parameters)"
   shell: >
-    oc process -f {{ item.template }} --param-file={{ item.params }} | oc apply -f -
-  with_items:
-  - "{{ openshift_cluster['builds'] }}"
+    oc process -f {{ item.1.template }} --param-file={{ item.1.params }} | oc apply -f -
+  with_subelements:
+  - "{{ openshift_cluster }}"
+  - content 
   when:
-  - item.params is defined
-  - item.params|trim != ""
-
-- name: "Create OpenShift objects for Cluster Deployments (WITHOUT parameters)"
-  command: >
-    oc apply -f {{ item.template }}
-  with_items:
-  - "{{ openshift_cluster['deployments'] }}"
-  when:
-  - item.params is not defined or item.params|trim == ""
-
-- name: "Create OpenShift objects for Cluster Deployments (WITH parameters)"
-  shell: >
-    oc process -f {{ item.template }} --param-file={{ item.params }} | oc apply -f - 
-  with_items:
-  - "{{ openshift_cluster['deployments'] }}"
-  when:
-  - item.params is defined
-  - item.params|trim != ""
+  - item.0.object not in [ 'namespace', 'policy' ]
+  - item.1.params is defined
+  - item.1.params|trim != ""
