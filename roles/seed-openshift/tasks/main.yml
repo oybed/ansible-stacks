@@ -1,0 +1,50 @@
+---
+
+- name: "Create OpenShift objects for Cluster Namespaces"
+  command: >
+    oc apply -f {{ item.template }} 
+  with_items: "{{ openshift_cluster['namespaces'] }}"
+
+- name: "Create OpenShift objects for Cluster Policies"
+  command: >
+    oc apply -f {{ item.template }} 
+  register: task_result
+  until: task_result.rc == 0
+  retries: 5
+  delay: 1
+  ignore_errors: yes
+  with_items: "{{ openshift_cluster['policies'] }}"
+
+- name: "Create OpenShift objects for Cluster Builds (WITHOUT parameters)"
+  command: >
+    oc apply -f {{ item.template }}
+  with_items:
+  - "{{ openshift_cluster['builds'] }}"
+  when:
+  - item.params is not defined or item.params|trim == ""
+
+- name: "Create OpenShift objects for Cluster Builds (WITH parameters)"
+  shell: >
+    oc process -f {{ item.template }} --param-file={{ item.params }} | oc apply -f -
+  with_items:
+  - "{{ openshift_cluster['builds'] }}"
+  when:
+  - item.params is defined
+  - item.params|trim != ""
+
+- name: "Create OpenShift objects for Cluster Deployments (WITHOUT parameters)"
+  command: >
+    oc apply -f {{ item.template }}
+  with_items:
+  - "{{ openshift_cluster['deployments'] }}"
+  when:
+  - item.params is not defined or item.params|trim == ""
+
+- name: "Create OpenShift objects for Cluster Deployments (WITH parameters)"
+  shell: >
+    oc process -f {{ item.template }} --param-file={{ item.params }} | oc apply -f - 
+  with_items:
+  - "{{ openshift_cluster['deployments'] }}"
+  when:
+  - item.params is defined
+  - item.params|trim != ""
