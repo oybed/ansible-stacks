@@ -1,22 +1,26 @@
 ---
 
 openshift_cluster:
-  namespaces:
+- object: namespace
+  content:
   - name: "cakephp-development"
     template: "{{ inventory_dir }}/../files/cakephp/namespace/development.yml"
   - name: "cakephp-stage"
     template: "{{ inventory_dir }}/../files/cakephp/namespace/stage.yml"
   - name: "cakephp-production"
     template: "{{ inventory_dir }}/../files/cakephp/namespace/production.yml"
-  policies:
+- object: policy
+  content:
   - template: "{{ inventory_dir }}/../files/policy/clusterroles.yml"
   - template: "{{ inventory_dir }}/../files/policy/clusterrolebindings.yml"
   - template: "{{ inventory_dir }}/../files/policy/storageclass.yml"
-  builds:
+- object: builds
+  content:
   - name: "cakephp"
     template: "{{ inventory_dir }}/../files/cakephp/build/template.yml"
     params: "{{ inventory_dir }}/../files/cakephp/build/development/params"
-  deployments:
+- object: deployments
+  content:
   - name: "cakephp-development"
     template: "{{ inventory_dir }}/../files/cakephp/deployment/template.yml"
     params: "{{ inventory_dir }}/../files/cakephp/deployment/development/params"
